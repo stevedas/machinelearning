@@ -1,0 +1,30 @@
+#import the libraries
+import matplotlib.pyplot as plt
+
+y = [50,110,100,130,110,170,110,180,200,280,270,303,310]
+x = [5,10,15,20,25,30,35,40,45,50,55,60,65]
+plt.xlabel('Advertising')
+plt.ylabel('Sales')
+#plt.scatter(x, y)
+#plt.show()
+
+import seaborn as sns
+
+#create scatterplot with regression line
+sns.regplot(x, y, ci=None)
+
+#import the libraries
+import pandas as pd
+import statsmodels.formula.api as smf
+
+#create the dataframe from scratch instead of importing an excel sheet
+df = pd.DataFrame({'Advert':x,'Sales': y})
+
+#Next use the ols function to create a regression model using that data in #the dataframe #called df  and fit the data of the dataframe into the model
+result = smf.ols(formula= 'Sales ~ Advert', data=df).fit()
+
+# Print the parameters/coefficients in the regression equation
+print(result.params)
+
+# print the regression analysis/results
+print(result.summary())
