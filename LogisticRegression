@@ -1,0 +1,40 @@
+import pandas as pd
+import statsmodels.formula.api as smf
+
+#Upload the contents of an excel file to a DataFrame
+df= pd.read_excel("C:/Users/ME/OneDrive/Desktop/Soccer.xlsx")
+
+#Create a multiple logistic regression model
+logRegModel = smf.logit('Win_Or_Lose ~ Temp + Prior_Goals', data = df)
+
+#Fit the data in df into the model
+results = logRegModel.fit()
+
+#Print the results summary
+print(results.summary())
+
+#make a prediction for a given temp x and prior goals y   
+prediction = results.predict(pd.DataFrame({'Temp': [20],'Prior_Goals':[5]})  )
+#print(prediction[0])
+
+print(f'The predicted probability of winning is {prediction[0]}')
+
+
+#plot the scatterplot with the actual data
+z = df.Win_Or_Lose 
+x = df.Temp
+y = df.Prior_Goals
+
+# Creating figure but first import necessary libraries
+from mpl_toolkits import mplot3d
+import matplotlib.pyplot as plt
+
+fig = plt.figure(figsize = (10, 7))
+Three_D_Axes = plt.axes(projection ="3d")
+
+# Creating plot
+Three_D_Axes.scatter3D(x, y, z, color = "blue")
+plt.title("3D scatter plot")
+
+# show plot
+plt.show()
