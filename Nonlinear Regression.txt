@@ -1,0 +1,52 @@
+#Import the needed libraries
+from numpy import array 
+from scipy.optimize import curve_fit
+import matplotlib.pyplot as plt
+import numpy as np
+
+#Create two numpy arrays for the data
+y = array([0, 2, 4, 5, 5, 7, 9, 7, 9, 10, 9, 8, 9, 8, 7, 6, 7, 5, 6, 6])
+x = array([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19])
+
+#Plot the data so we can see if the shape is nonlinear
+# 'bo' means to use blue dots to plot the data
+plt.plot(x, y, 'bo')
+plt.show()
+
+#Define a nonlinear function that approximates the shape of the scatter plot  
+#of the data
+def NonlinFunc(x, a, b, c):
+    return a*x**2+b*x+c
+ 
+
+#Use non-linear least squares to fit the function, NonlinFunc, to the data
+params,covs  = curve_fit(NonlinFunc, x, y)
+print("parameters: \n", params)
+print( "covariance matrix:\n",covs)
+
+#Get the coefficients for our nonlinear function and create our
+#non-linear regression equation
+a, b, c = params[0], params[1], params[2]
+yfit = a*x**2+b*x+c
+
+#Plot the original data points and also the nonlinear regression curve
+#together on the same graph
+plt.plot(x, y, 'bo', label="y-original")
+plt.plot(x, yfit, label="y=a*x^2+b*x+c")
+
+#Label the axes and include a legend in the graph 
+plt.xlabel('STRESS: Pounds per sqaure Inch')
+plt.ylabel('STRAIN: Change in Inches')
+plt.legend(loc='best', fancybox=True, shadow=True)
+plt.grid(True)
+plt.show() 
+
+# Get values to judge the non linear regression model
+print("Regression Equation's Mean Absolute: %.2f" % np.mean(np.absolute(yfit - y)))
+print("Mean Squared Error (MSE): %.2f" % np.mean((yfit - y) ** 2))
+from sklearn.metrics import r2_score
+print("R-Squared Value: %.2f" % r2_score(y,yfit))
+
+#import scipy.stats as stats 
+#h = stats.f_oneway(x,yfit)
+#print(h)
