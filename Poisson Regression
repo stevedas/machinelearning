@@ -1,0 +1,39 @@
+#Import the libraries for the analysis
+import statsmodels.formula.api as smf
+import pandas as pd
+df= pd.read_excel("C:/Users/ME/OneDrive/Desktop/Poisson.xlsx")
+
+#Create a poisson model
+Poi_Model = smf.poisson('lost~bytes + age', data = df).fit()
+print(Poi_Model.summary())
+
+#make a prediction for a given value of bytes x and age y   
+prediction = results.predict(pd.DataFrame({'bytes': [57],'age':[6]})  )
+#print(prediction[0])
+
+print(f'The predicted number of lost packets are {prediction[0]}')
+
+
+# Import libraries to create the graph
+from mpl_toolkits import mplot3d
+import matplotlib.pyplot as plt
+
+
+# Creating dataset
+z = df.lost
+x = df.bytes
+y = df.age
+
+# Creating figure
+fig = plt.figure(figsize = (10, 7))
+ax3d = plt.axes(projection ="3d")
+
+# Create the plot
+ax3d.scatter3D(x, y, z, color = "brown")
+plt.title("Lost Packets Scatter Plot")
+ax3d.set_zlabel('Number of Lost Packets')
+ax3d.set_xlabel('Number of Bytes in thousands')
+ax3d.set_ylabel('Computer Age')
+
+# show plot
+plt.show()
