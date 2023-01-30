@@ -1,0 +1,21 @@
+#Import the libraries for the analysis
+import statsmodels.formula.api as smf
+import statsmodels.api as sm
+import pandas as pd
+df= pd.read_excel("C:/Users/ME/OneDrive/Desktop/NegBinomReg.xlsx")
+
+#Create the negative binomial regression model
+model = smf.glm('lost~bytes + age', data=df,
+        family=sm.families.NegativeBinomial())
+
+#Fit the data from df to the model we just created
+FittedModel=model.fit()
+
+#Display a summary of the model
+print(FittedModel.summary())
+
+#Make a prediction using two values not seen in the data
+prediction = FittedModel.predict(pd.DataFrame({'bytes': [57],'age':[6]})  )
+ 
+
+print(f'The predicted number of lost packets are {prediction[0]}')
