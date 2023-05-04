@@ -1,0 +1,74 @@
+#import the necessary libraries
+import numpy as np
+import pandas as pd
+
+
+#create a dataframe from an uploaded excel file
+dataFrame = pd.read_excel("C:/Steve Drive/Recession Data.xlsx")
+X = dataFrame.iloc[:, 2:5] 
+y = dataFrame.iloc[:, 0]
+
+
+#split the data into train and test sets
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.3)
+
+
+#scale the data for faster performance
+from sklearn.preprocessing import StandardScaler
+STsc = StandardScaler()
+X_train = STsc.fit_transform(X_train)
+X_test = STsc.transform(X_test)
+
+
+#Create the support vector machine
+from sklearn.svm import SVC
+OurSVM = SVC(kernel = 'poly', random_state = 0)
+OurSVM.fit(X_train, y_train)
+
+#get the predicted amounts using the values in X_test
+y_pred = OurSVM.predict(X_test) 
+
+
+
+#Create a confusion matrix to see how accurate our model is
+from sklearn.metrics import confusion_matrix
+OurCM = confusion_matrix(y_test, y_pred)
+from sklearn.metrics import accuracy_score 
+print ("The Model's Accuracy is : ", accuracy_score(y_test, y_pred))
+print ("The Confusion Matrix is:" )
+print(OurCM)
+
+print("\n")
+
+print ("The Confusion Matrix shows:" )
+print ("TRUE NEGATIVE  |  FALSE POSITIVE")
+print ("--------------------------------" ) 
+print ("FALSE NEGATIVE |  TRUE POSITIVE" )
+
+print("\n")
+
+#compare the real values to those predicted by the support vector machine
+df = pd.DataFrame({'Actual Values':y_test, 'Predicted Values':y_pred})
+print(df)
+
+#Use the model to classify whether there's a recession for
+#three new values for inflation unemployment and GNP
+
+#Use the normalize method to scale only one group of values
+from sklearn import preprocessing
+data = np.array([6, 4, 25460])
+norm_data = preprocessing.normalize([data])
+
+y_pred = OurSVM.predict(norm_data) 
+
+print("\n")
+print("Using the values of 6% for inflation, 4% for unemployment and 25460 for GNP,")
+print("the prediction for Recession is ( where 1 is yes, 0 is no):")
+print (y_pred)
+
+ 
+
+
+
+
