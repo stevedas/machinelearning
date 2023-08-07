@@ -1,5 +1,5 @@
 import pandas as pd
-import statsmodels.formula.api as smf
+import statsmodels.formula.api as smf 
 
 #Upload the contents of an excel file to a DataFrame
 df= pd.read_excel("C:/Users/ME/OneDrive/Desktop/Soccer.xlsx")
