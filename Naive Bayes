@@ -1,0 +1,50 @@
+#Importing the libraries  
+import numpy as np    
+import pandas as pd  
+  
+# Importing the dataset  
+dataFrame = pd.read_excel("C:/Steve Drive/Loan Defaults.xlsx")
+X = dataFrame.iloc[:, [0,1,2]].values  
+y = dataFrame.iloc[:,3].values  
+  
+# Splitting the dataset into the Training set and Test set  
+from sklearn.model_selection import train_test_split  
+x_train, x_test, y_train, y_test = train_test_split(X, y, test_size = 0.3, random_state = 1)  
+ 
+# Fitting Naive Bayes to the Training set  
+from sklearn.naive_bayes import GaussianNB  
+NBclassifier = GaussianNB()  
+NBclassifier.fit(x_train, y_train)
+
+# Predicting the Test set results  
+y_pred = NBclassifier.predict(x_test) 
+
+
+#evaluate the model
+from sklearn.metrics import classification_report 
+print(classification_report(y_test, y_pred))
+
+print("The actual default instances in y_test are:")
+print(y_test)
+
+print("The predicted default instances in y_pred are:")
+print(y_pred)
+
+
+#Use the predict method to predict default for a new loan 
+#applicant where age is 24, annual income is $40,000 and
+#credit score is 600
+
+
+new_observation = np.array([[24, 40, 60]])
+#note the shape of the new observation is one row and three columns
+#this can be shown using the code  new_observation.shape
+
+
+New_y_pred = NBclassifier.predict(new_observation) 
+
+print("\n")
+print("Using the values of 24 for age, $40,000 for salary and 600 for Credit Score,")
+print("the prediction for Default is:")
+print (New_y_pred[0])
+print("(Where 1 is yes and 0 is no.)")
