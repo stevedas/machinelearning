@@ -1,0 +1,57 @@
+import matplotlib.pyplot as plt
+from sklearn.neighbors import KNeighborsClassifier
+
+#Make two lists: x is the % marble and y is the % limestone
+#Then make another list corresponding to the type of temple
+#for each pair of x,y values. 0 is a Greek temple and 1 is a Roman temple
+
+x = [65,70,30,80,20,90,10,10,5,85]
+y = [30,20,60,10,70,5,80,70,70,10]
+temple_type = [1,1,0,1,0,1,0,0,0,1]
+
+
+#Then make a list of pairs, consisting of the
+#the x and y values for each known temple
+#then print the pairs
+templeList = list(zip(x, y))
+print("The % marble and % limestone for each temple is listed below:")
+print(templeList)
+
+#split tmpl_list and temple_type into training and test sets
+from sklearn.model_selection import train_test_split 
+templeList_train, templeList_test, templeType_train, templeType_test = train_test_split(templeList, temple_type, test_size=0.3)
+
+knn_model = KNeighborsClassifier(n_neighbors=5)
+knn_model.fit(templeList_train, templeType_train)
+
+
+#Get the predicted values of the type of temple from the test set and
+#put them in pred_temple_type
+pred_templeType = knn_model.predict(templeList_test)
+
+
+#Display the accuracy of the model
+from sklearn.metrics import accuracy_score 
+accuracy = accuracy_score(templeType_test, pred_templeType)
+print("\n")
+print("The Accuracy of the Model is:", accuracy)
+
+
+
+new_x_marble = 40
+new_y_limestone = 40
+new_point = [(new_x_marble , new_y_limestone)]
+prediction = knn_model.predict(new_point)
+print("\n")
+print(f"The predicted class for the new temple is {prediction[0]},  where 0 is Greek and 1 is Roman.")
+
+
+#plot the groups seprated into two classes
+plt.scatter(x  , y  , c=temple_type, edgecolor ="black" , s = 80)
+plt.xlabel("% MARBLE")
+plt.ylabel("% LIMESTONE")
+
+#plot the new observation
+plt.scatter(new_x_marble, new_y_limestone, c= "pink", edgecolor ="black" ,marker ="^", linewidths = 1.5, s = 140)
+
+plt.show()
