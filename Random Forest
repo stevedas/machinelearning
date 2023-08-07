@@ -1,0 +1,66 @@
+ 
+# Import the libraries to create and train 
+# our random forest classifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score 
+from sklearn.model_selection import train_test_split
+
+
+# Import the pandas library to work with the data 
+import pandas as pd
+
+# Import the libraries to display the random forest
+from sklearn.tree import export_graphviz
+import graphviz
+
+#import the training data and turn it into a DataFrame
+from google.colab import files
+uploaded = files.upload()
+
+import io
+dataFrame = pd.read_excel(io.BytesIO(uploaded['Metal Alloy Chart.xlsx']))
+
+# Split the DataFrame into features (X) and a target (y)
+X = dataFrame.drop(['Name','Earthquake Effectiveness'], axis=1)
+y = dataFrame['Earthquake Effectiveness']
+
+# Split the data into training and test sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5)
+
+#TBuild and train the Model
+RFmodel = RandomForestClassifier()
+RFmodel.fit(X_train, y_train)
+
+# Make predictions on the test data set (X_test)
+# These predictions will be used later on
+# to see how accurate the model is
+y_pred = RFmodel.predict(X_test)
+
+#Evaluate the model
+accuracy = accuracy_score(y_test, y_pred)
+print("\n")
+print("The Model's Accuracy is:", accuracy)
+
+
+# She what the first decision tree looks like
+# Export the first  decision tree from the forest
+print("\n")
+print("THE FIRST TREE OF THE RANDOM FOREST LOOKS LIKE THIS:")
+tree = RFmodel.estimators_[0]
+Tree_Image  = export_graphviz(tree,
+                               feature_names=X_train.columns,   
+                               max_depth=3,
+			       filled=True,
+                               proportion=True)
+graph = graphviz.Source(Tree_Image )
+display(graph)
+
+#Classify a newly invented alloy
+data = [[50,20,90,9]]
+df = pd.DataFrame(data, columns=['Tensile Strength', 'Yield Strength', 'Hardness','Density'])
+
+prediction = RFmodel.predict(df)
+print("\n")
+print(f"The predicted class for the new alloy is {prediction[0]},")
+print("where 0 is not effective and 1 is effective")  
+print("against earthquake damage.") 
