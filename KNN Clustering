@@ -8,7 +8,7 @@ from sklearn.neighbors import KNeighborsClassifier
 x = [65,70,30,80,20,90,10,10,5,85]
 y = [30,20,60,10,70,5,80,70,70,10]
 temple_type = [1,1,0,1,0,1,0,0,0,1]
-
+ 
 
 #Then make a list of pairs, consisting of the
 #the x and y values for each known temple
