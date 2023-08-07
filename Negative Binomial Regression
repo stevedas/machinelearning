@@ -3,7 +3,7 @@ import statsmodels.formula.api as smf
 import statsmodels.api as sm
 import pandas as pd
 df= pd.read_excel("C:/Users/ME/OneDrive/Desktop/NegBinomReg.xlsx")
-
+ 
 #Create the negative binomial regression model
 model = smf.glm('lost~bytes + age', data=df,
         family=sm.families.NegativeBinomial())
