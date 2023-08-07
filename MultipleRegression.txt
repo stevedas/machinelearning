@@ -5,7 +5,7 @@ df= pd.read_excel("C:/Users/ME/OneDrive/Desktop/MultReg.xlsx")
 #show the dataframe called df
 
 df
-
+ 
 #First, import the statsmodels library
 import statsmodels.formula.api as smf
 
