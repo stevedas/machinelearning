@@ -2,7 +2,7 @@
 import statsmodels.formula.api as smf
 import pandas as pd
 df= pd.read_excel("C:/Users/ME/OneDrive/Desktop/Poisson.xlsx")
-
+ 
 #Create a poisson model
 Poi_Model = smf.poisson('lost~bytes + age', data = df).fit()
 print(Poi_Model.summary())
