@@ -8,7 +8,7 @@ Poi_Model = smf.poisson('lost~bytes + age', data = df).fit()
 print(Poi_Model.summary())
 
 #make a prediction for a given value of bytes x and age y   
-prediction = results.predict(pd.DataFrame({'bytes': [57],'age':[6]})  )
+prediction = Poi_Model.predict(pd.DataFrame({'bytes': [57],'age':[6]})  )
 #print(prediction[0])
 
 print(f'The predicted number of lost packets are {prediction[0]}')
